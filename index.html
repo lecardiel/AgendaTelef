@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css" />
+    <script src="https://unpkg.com/vue@3"></script> 
+    <title>Agenda Telefónica</title>
+</head>
+
+<body>
+
+    <header>
+      <h1>Agenda de Telefono</h1>
+    </header>
+
+    <section id="seccion">
+
+         <fieldset class="col-6">
+          <legend>Nuevo Contacto</legend>
+          Nombre:
+          <input v-model="nuevoNombre" type="text">
+          Teléfono:
+          <input v-model="nuevoTelefono" type="tel">
+          Categoría:
+          <select v-model="nuevaCategoria">
+            <option disabled value="">Seleccione una categoría</option>
+            <option>Familia</option>
+            <option>Amigos</option>
+            <option>Trabajo</option>
+            <option>Otros</option>
+          </select>
+          Mensajes:
+          <input v-model.number="nuevosMensajes" type="number" min="0" max="25" @input="validarMensajes" />
+          Llamadas:
+          <input v-model.number="nuevasLlamadas" type="number" min="0" max="15" @input="validarLlamadas" />
+
+          <button @click="agregarNuevoContacto" :disabled="contactos.length >= 25">Agregar</button>
+         </fieldset>
+
+        <article>
+          <table v-if="contactos.length > 0">
+            <tr>
+              <th colspan="6"> Contactos: </th>
+            </tr>
+
+            <tr v-for="(contacto, index) in contactos" :key="index">
+              <td>{{ contacto.nombre }}</td>
+              <td>{{ contacto.telefono }}</td>
+              <td>{{ contacto.categoria }}</td>
+              <td>📩 {{ contacto.mensajes }}</td>
+              <td>📞 {{ contacto.llamadas }}</td>
+              <td>
+                <button @click="eliminarContacto(index)">🗑️</button>
+              </td>
+            </tr>
+          </table>
+
+          <p v-if="contactos.length > 0">Total de Mensajes: {{ totalMensajes }}</p>
+          <p v-if="contactos.length > 0">Total de Llamadas: {{ totalLlamadas }}</p>
+
+          <p v-if="contactos.length === 0">Sin contactos.</p>
+          <p v-else>Tus contactos: {{ contactos.length }}/25</p>
+        </article>
+
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
